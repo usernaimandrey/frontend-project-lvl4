@@ -29,7 +29,8 @@
   },
   "homepage": "https://github.com/usernaimandrey/frontend-project-lvl4#readme",
   "dependencies": {
-    "bootstrap": "^4.6.0",
+    "axios": "^0.24.0",
+    "bootstrap": "^5.1.3",
     "core-js": "^3.12.1",
     "debug": "^4.3.1",
     "fastify": "^3.15.1",
@@ -49,6 +50,7 @@
     "popper.js": "^1.16.1",
     "pug": "^3.0.2",
     "react": "^17.0.2",
+    "react-bootstrap": "^2.1.0",
     "react-dom": "^17.0.2",
     "react-router-dom": "^6.2.1",
     "regenerator-runtime": "^0.13.7",
