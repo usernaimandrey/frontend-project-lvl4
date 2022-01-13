@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/usernaimandrey/frontend-project-lvl4#readme",
   "dependencies": {
+    "@reduxjs/toolkit": "^1.7.1",
     "axios": "^0.24.0",
     "bootstrap": "^5.1.3",
     "core-js": "^3.12.1",
@@ -52,6 +53,7 @@
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.0",
     "react-dom": "^17.0.2",
+    "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.1",
     "regenerator-runtime": "^0.13.7",
     "yup": "^0.32.11"

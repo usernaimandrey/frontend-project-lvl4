@@ -6,7 +6,7 @@ import {
 import { Button, Form } from 'react-bootstrap';
 import imgFormLogin from '../../picture/label2.png';
 import schema from '../../validator/index.js';
-import customUseFormik from '../../hooks/customUseFormik.jsx';
+import useFormikCustom from '../../hooks/useFormikCustom.jsx';
 import routes from '../../routes.js';
 import useAuth from '../../hooks/useAuth.jsx';
 
@@ -14,7 +14,6 @@ const LoginPage = () => {
   const auth = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  console.log(location);
   const input = useRef();
   useEffect(() => {
     input.current.focus();
@@ -28,12 +27,10 @@ const LoginPage = () => {
     try {
       const { login, password } = values;
       const path = routes.loginPath();
-      console.log(path);
       const { data } = await axios.post(path, {
         username: login,
         password,
       });
-      console.log(data);
       auth.logIn();
       localStorage.setItem('userId', JSON.stringify({ token: data.token }));
       navigate('/', { from: location });
@@ -41,7 +38,7 @@ const LoginPage = () => {
       setErrors({ login: 'Неверное имя пользователя', password: 'Неверный пароль' });
     }
   };
-  const formik = customUseFormik(initialValues, submitHandler, schema.schemaLogin);
+  const formik = useFormikCustom(initialValues, submitHandler, schema.schemaLogin);
   const {
     isSubmitting,
     handleSubmit,

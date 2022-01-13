@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom';
 import React, { useState, useContext, useEffect } from 'react';
+import { Provider } from 'react-redux';
 import {
   Button, Navbar, Container,
 } from 'react-bootstrap';
@@ -18,6 +19,7 @@ import PageNotFounf from './components/PageNotFound/PageNotFound.jsx';
 import imgLabel from './picture/label.jpg';
 // import useAuth from './hooks/useAuth.jsx';
 import authContext from './context/index.jsx';
+import store from './slices/index.js';
 
 const AuthProvider = ({ children }) => {
   const [logedIn, setLogin] = useState(false);
@@ -102,7 +104,9 @@ const App = () => (
 const container = document.getElementById('chat');
 
 ReactDOM.render(
-  <App />,
+  <Provider store={store}>
+    <App />
+  </Provider>,
   container,
 );
 

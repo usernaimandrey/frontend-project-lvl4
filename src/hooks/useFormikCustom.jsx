@@ -1,9 +1,9 @@
 import { useFormik } from 'formik';
 
-const customUseFormik = (initialValues, submitHandler, schema) => useFormik({
+const useFormikCustom = (initialValues, submitHandler, schema) => useFormik({
   initialValues,
   onSubmit: submitHandler,
   validationSchema: schema,
 });
 
-export default customUseFormik;
+export default useFormikCustom;
