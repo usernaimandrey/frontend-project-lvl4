@@ -37,10 +37,10 @@ const AuthProvider = ({ children }) => {
 };
 
 const PrivateRoute = ({ children }) => {
-  const token = localStorage.getItem('userId');
+  const userId = JSON.parse(localStorage.getItem('userId'));
   const location = useLocation();
   return (
-    token ? children : <Navigate to="/login" state={{ from: location }} />
+    userId && userId.token ? children : <Navigate to="/login" state={{ from: location }} />
   );
 };
 
@@ -49,8 +49,8 @@ const AuthButton = () => {
   const location = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
-    const token = localStorage.getItem('userId');
-    if (token) {
+    const userId = JSON.parse(localStorage.getItem('userId'));
+    if (userId && userId.token) {
       auth.logIn();
     } else {
       auth.logOut();
@@ -69,7 +69,7 @@ const AuthButton = () => {
 
 const App = () => (
   <AuthProvider>
-    <div className="d-flex flex-column h-100">
+    <div className="d-flex flex-column h-100 overflow-hidden">
       <Router>
         <Navbar className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
           <Container fluid>
@@ -80,22 +80,20 @@ const App = () => (
             <AuthButton />
           </Container>
         </Navbar>
-        <div className="container-fluid h-100">
-          <Routes>
-            <Route
-              exact
-              path="/"
-              element={(
-                <PrivateRoute>
-                  <MainPage />
-                </PrivateRoute>
+        <Routes>
+          <Route
+            exact
+            path="/"
+            element={(
+              <PrivateRoute>
+                <MainPage />
+              </PrivateRoute>
               )}
-            />
-            <Route path="/login/" element={<Login />} />
-            <Route path="/registration/" element={<MainPage />} />
-            <Route path="*" element={<PageNotFounf />} />
-          </Routes>
-        </div>
+          />
+          <Route path="/login/" element={<Login />} />
+          <Route path="/registration/" element={<MainPage />} />
+          <Route path="*" element={<PageNotFounf header="Страница не найдена" />} />
+        </Routes>
       </Router>
     </div>
   </AuthProvider>

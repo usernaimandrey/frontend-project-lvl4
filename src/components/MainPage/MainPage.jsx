@@ -1,23 +1,42 @@
 import React, { useEffect } from 'react';
+import { Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  selectors,
-  fetchGetData,
-} from '../../slices/chennelReducer.js';
-import { selecrorsMessages } from '../../slices/messagesReducer.js';
+import { fetchGetData } from '../../slices/chennelReducer.js';
+import SideBar from '../SideBar/SideBar.jsx';
+import ListOfMessages from '../ListOfMessages/ListOfMessages.jsx';
+import CustomSpinner from '../Spinner/CustomSpinner.jsx';
+import PageNotFound from '../PageNotFound/PageNotFound.jsx';
 
 const MainPage = () => {
   const dispatch = useDispatch();
-  const data = useSelector(selectors.selectAll);
-  const messages = useSelector(selecrorsMessages.selectAll);
-  const { currentChannelId } = useSelector((state) => state.channel);
-  console.log(data, currentChannelId, messages, 'data');
   useEffect(() => {
     dispatch(fetchGetData());
   }, [dispatch]);
-  return (
-    <div>Main</div>
-  );
+  const { loading } = useSelector((state) => state.channel);
+  switch (loading) {
+    case 'no data': {
+      return <CustomSpinner />;
+    }
+    case 'loading': {
+      return <CustomSpinner />;
+    }
+    case 'success': {
+      return (
+        <Container className="h-100 overflow-hidden rounded shadow my-4">
+          <div className="row h-100 bg-white flex-md-row">
+            <SideBar />
+            <ListOfMessages />
+          </div>
+        </Container>
+      );
+    }
+    case 'failed': {
+      return <PageNotFound header="Проблеммы с сетью" />;
+    }
+    default: {
+      throw new Error(`Unknow state: ${loading}`);
+    }
+  }
 };
 
 export default MainPage;
