@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import {
   Link, useLocation, useNavigate,
@@ -11,6 +12,7 @@ import routes from '../../routes.js';
 import useAuth from '../../hooks/useAuth.jsx';
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const auth = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -35,10 +37,10 @@ const LoginPage = () => {
       localStorage.setItem('userId', JSON.stringify({ token: data.token }));
       navigate('/', { from: location });
     } catch (e) {
-      setErrors({ login: 'Неверное имя пользователя', password: 'Неверный пароль' });
+      setErrors({ login: t('signInForm.logIn.errLogIn'), password: t('signInForm.password.errPas') });
     }
   };
-  const formik = useFormikCustom(initialValues, submitHandler, schema.schemaLogin);
+  const formik = useFormikCustom(initialValues, submitHandler, schema.schemaLogin(t('signInForm.validErr')));
   const {
     isSubmitting,
     handleSubmit,
@@ -52,17 +54,17 @@ const LoginPage = () => {
         <div className="card shadow-sm">
           <div className="card-body d-flex p-5 justify-content-sm-around align-items-center">
             <div>
-              <img src={imgFormLogin} className="rounded-circle" alt="" width="250" height="200" />
+              <img src={imgFormLogin} className="rounded-circle" alt="Залогинься)" width="250" height="200" />
             </div>
             <div className="d-flex flex-column align-items-center">
-              <h2 className="text-center mb-4">Войти</h2>
+              <h2 className="text-center mb-4">{t('signInForm.header')}</h2>
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="login">
-                  <Form.Label>Ваш ник</Form.Label>
+                  <Form.Label>{t('signInForm.logIn.name')}</Form.Label>
                   <Form.Control
                     type="text"
                     ref={input}
-                    placeholder="Ваш ник"
+                    placeholder={t('signInForm.logIn.name')}
                     autoComplete="login"
                     name="login"
                     isInvalid={errors.login}
@@ -73,10 +75,10 @@ const LoginPage = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="password">
-                  <Form.Label>Пароль</Form.Label>
+                  <Form.Label>{t('signInForm.password.name')}</Form.Label>
                   <Form.Control
                     type="password"
-                    placeholder="Пароль"
+                    placeholder={t('signInForm.password.name')}
                     name="password"
                     autoComplete="current-password"
                     isInvalid={errors.password}
@@ -87,14 +89,14 @@ const LoginPage = () => {
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicCheckbox" />
                 <Button className="w-100" variant="primary" type="submit" disabled={isSubmitting}>
-                  Войти
+                  {t('signInForm.header')}
                 </Button>
               </Form>
             </div>
           </div>
           <div className="card-footer p-4">
             <div className="text-center">
-              <Link to="/registration/">Регистрация</Link>
+              <Link to="/registration/">{t('signInForm.footer')}</Link>
             </div>
           </div>
         </div>

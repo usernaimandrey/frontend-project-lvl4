@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Container, Form, Button, Col,
 } from 'react-bootstrap';
@@ -6,6 +7,7 @@ import useFormikCustom from '../../hooks/useFormikCustom.jsx';
 import schema from '../../validator/index.js';
 
 const AddMessage = () => {
+  const { t } = useTranslation();
   const input = useRef();
   useEffect(() => {
     input.current.focus();
@@ -34,7 +36,7 @@ const AddMessage = () => {
               <Form.Control
                 ref={input}
                 type="text"
-                placeholder="Введите сообщение..."
+                placeholder={t('formMessage')}
                 autoComplete="message"
                 name="message"
                 value={values.message}

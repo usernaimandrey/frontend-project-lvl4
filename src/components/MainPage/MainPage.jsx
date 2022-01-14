@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchGetData } from '../../slices/chennelReducer.js';
@@ -8,6 +9,7 @@ import CustomSpinner from '../Spinner/CustomSpinner.jsx';
 import PageNotFound from '../PageNotFound/PageNotFound.jsx';
 
 const MainPage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchGetData());
@@ -31,7 +33,7 @@ const MainPage = () => {
       );
     }
     case 'failed': {
-      return <PageNotFound header="Проблеммы с сетью" />;
+      return <PageNotFound header={t('pageNotFound.networkErr')} />;
     }
     default: {
       throw new Error(`Unknow state: ${loading}`);

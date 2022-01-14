@@ -1,9 +1,11 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { Nav, Button, Container } from 'react-bootstrap';
 import { selectorsChannels } from '../../slices/chennelReducer.js';
 
 const SideBar = () => {
+  const { t } = useTranslation();
   const channel = useSelector(selectorsChannels.selectAll);
   const { currentChannelId } = useSelector((state) => state.channel);
   return (
@@ -15,7 +17,7 @@ const SideBar = () => {
         variant="tabs"
       >
         <Container className="d-flex justify-content-around">
-          <h4>Каналы</h4>
+          <h4>{t('sideBar')}</h4>
           <Button variant="outline-info" size="sm">&#10010;</Button>
         </Container>
         {channel.map(({ id, name }) => <Nav.Link key={id} eventKey={id}>{`# ${name}`}</Nav.Link>)}
