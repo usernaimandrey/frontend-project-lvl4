@@ -8,8 +8,9 @@ import AddMessage from '../Form/AddMessage.jsx';
 import { selectorsChannels } from '../../slices/chennelReducer.js';
 
 const ListOfMessages = () => {
+  const url = process.env.NODE_ENV === 'production' ? 'https://cryptic-basin-24595.herokuapp.com/' : 'http://localhost:5000/';
   const [messages, setMessages] = useState([]);
-  const socket = io('http://localhost:5000/', {
+  const socket = io(url, {
     reconnectionDelayMax: 10000,
   });
   useEffect(() => {
