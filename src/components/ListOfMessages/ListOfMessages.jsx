@@ -1,14 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { Container, Col } from 'react-bootstrap';
+import { io } from 'socket.io-client';
 import AddMessage from '../Form/AddMessage.jsx';
-import { selecrorsMessages } from '../../slices/messagesReducer.js';
+// import { selecrorsMessages } from '../../slices/messagesReducer.js';
 import { selectorsChannels } from '../../slices/chennelReducer.js';
 
 const ListOfMessages = () => {
+  const [messages, setMessages] = useState([]);
+  const socket = io('http://localhost:5000/', {
+    reconnectionDelayMax: 10000,
+  });
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log(socket.connected);
+    });
+    socket.on('newMessage', (msg) => {
+      console.log(msg, 'newMessang');
+      setMessages((prevMessages) => [...prevMessages, msg]);
+    });
+    return () => socket.disconnect();
+  }, []);
   const { t } = useTranslation();
-  const messages = useSelector(selecrorsMessages.selectAll);
+  // const messages = useSelector(selecrorsMessages.selectAll);
   const channels = useSelector(selectorsChannels.selectAll);
   const { currentChannelId } = useSelector((state) => state.channel);
   const [currentChannel] = channels.filter(({ id }) => id === currentChannelId);
@@ -27,21 +42,19 @@ const ListOfMessages = () => {
         </Container>
         <Container className="overflow-auto mt-2 my-3 mb-5">
           <Col>
-            <p>
-              <strong>Andrey: </strong>
-              Hello
-            </p>
-            <p>
-              <strong>Andrey: </strong>
-              Hello
-            </p>
+            {messages.map(({ user, text, id }) => (
+              <p key={id}>
+                <strong>{`${user}: `}</strong>
+                {text}
+              </p>
+            ))}
             <p>
               <strong>Andrey: </strong>
               Hello
             </p>
           </Col>
         </Container>
-        <AddMessage />
+        <AddMessage socket={socket} />
       </div>
 
     </div>

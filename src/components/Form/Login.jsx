@@ -34,7 +34,7 @@ const LoginPage = () => {
         password,
       });
       auth.logIn();
-      localStorage.setItem('userId', JSON.stringify({ token: data.token }));
+      localStorage.setItem('userId', JSON.stringify({ token: data.token, userAuth: login }));
       navigate('/', { from: location });
     } catch (e) {
       setErrors({ login: t('signInForm.logIn.errLogIn'), password: t('signInForm.password.errPas') });
