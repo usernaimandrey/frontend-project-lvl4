@@ -1,31 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Container, Col } from 'react-bootstrap';
 import { io } from 'socket.io-client';
+import routes from '../../routes.js';
 import AddMessage from '../Form/AddMessage.jsx';
-// import { selecrorsMessages } from '../../slices/messagesReducer.js';
+import { selecrorsMessages, addNewMessages } from '../../slices/messagesReducer.js';
 import { selectorsChannels } from '../../slices/chennelReducer.js';
 
 const ListOfMessages = () => {
-  const url = process.env.NODE_ENV === 'production' ? 'https://cryptic-basin-24595.herokuapp.com/' : 'http://localhost:5000/';
-  const [messages, setMessages] = useState([]);
+  const url = process.env.NODE_ENV === 'production' ? routes.getUrlProduction() : routes.getUrlDev();
   const socket = io(url, {
     reconnectionDelayMax: 10000,
   });
+  const messages = useSelector(selecrorsMessages.selectAll);
+  const channels = useSelector(selectorsChannels.selectAll);
+  const dispatch = useDispatch();
+  const chatRef = useRef();
   useEffect(() => {
-    socket.on('connect', () => {
-      console.log(socket.connected);
-    });
+    chatRef.current.scrollTop = chatRef.current.scrollHeight;
+  }, [messages]);
+  useEffect(() => {
     socket.on('newMessage', (msg) => {
-      console.log(msg, 'newMessang');
-      setMessages((prevMessages) => [...prevMessages, msg]);
+      dispatch(addNewMessages({ msg }));
     });
-    return () => socket.disconnect();
   }, []);
   const { t } = useTranslation();
-  // const messages = useSelector(selecrorsMessages.selectAll);
-  const channels = useSelector(selectorsChannels.selectAll);
   const { currentChannelId } = useSelector((state) => state.channel);
   const [currentChannel] = channels.filter(({ id }) => id === currentChannelId);
   return (
@@ -41,7 +41,7 @@ const ListOfMessages = () => {
             {t('messageBox.key', { count: messages.length })}
           </p>
         </Container>
-        <Container className="overflow-auto mt-2 my-3 mb-5">
+        <Container ref={chatRef} className="overflow-auto mt-2 my-3 mb-5">
           <Col>
             {messages.map(({ user, text, id }) => (
               <p key={id}>
@@ -49,10 +49,6 @@ const ListOfMessages = () => {
                 {text}
               </p>
             ))}
-            <p>
-              <strong>Andrey: </strong>
-              Hello
-            </p>
           </Col>
         </Container>
         <AddMessage socket={socket} />

@@ -19,7 +19,8 @@ const AddMessage = (props) => {
   const { schemaAddMessage } = schema;
   const initialValues = { message: '' };
   const subMitHandler = (values, { resetForm }) => {
-    socket.emit('newMessage', { text: values.message, user: userAuth, channel: currentChannelId }, (response) => {
+    const msg = { text: values.message, user: userAuth, channel: currentChannelId };
+    socket.volatile.emit('newMessage', msg, (response) => {
       console.log(response);
     });
     resetForm();

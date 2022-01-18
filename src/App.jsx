@@ -27,7 +27,6 @@ const App = () => (
 );
 
 const container = document.getElementById('chat');
-
 ReactDOM.render(
   <Provider store={store}>
     <App />

@@ -4,6 +4,8 @@ const host = '';
 const prefix = 'api/v1';
 
 export default {
+  getUrlProduction: () => 'https://cryptic-basin-24595.herokuapp.com/',
+  getUrlDev: () => 'http://localhost:5000/',
   getDataPath: () => [host, prefix, 'data'].join('/'),
   loginPath: () => [host, prefix, 'login'].join('/'),
   channelsPath: () => [host, prefix, 'channels'].join('/'),
