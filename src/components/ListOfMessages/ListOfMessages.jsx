@@ -44,10 +44,12 @@ const ListOfMessages = () => {
         <Container ref={chatRef} className="overflow-auto mt-2 my-3 mb-5">
           <Col>
             {messages.map(({ user, text, id }) => (
-              <p key={id}>
-                <strong>{`${user}: `}</strong>
-                {text}
-              </p>
+              <Container key={id} className="mb-4 border-bottom">
+                <p>
+                  <strong className="text-danger">{`${user}: `}</strong>
+                  {text}
+                </p>
+              </Container>
             ))}
           </Col>
         </Container>

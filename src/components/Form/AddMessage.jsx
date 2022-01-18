@@ -18,10 +18,17 @@ const AddMessage = (props) => {
   }, []);
   const { schemaAddMessage } = schema;
   const initialValues = { message: '' };
-  const subMitHandler = (values, { resetForm }) => {
+  const subMitHandler = (values, { resetForm, setFieldValue }) => {
     const msg = { text: values.message, user: userAuth, channel: currentChannelId };
-    socket.volatile.emit('newMessage', msg, (response) => {
-      console.log(response);
+    socket.emit('newMessage', msg, ({ status }) => {
+      if (status === 'ok') {
+        resetForm();
+        input.current.focus();
+      } else {
+        setFieldValue('message', values.message);
+        input.current.focus();
+        setTimeout(() => socket.emit('newMessage', msg), 3000);
+      }
     });
     resetForm();
     input.current.focus();
@@ -51,7 +58,7 @@ const AddMessage = (props) => {
             </Form.Group>
           </Col>
           <Col>
-            <Button variant="outline-dark" type="submit" disabled={!socket.connected || !isValid}>
+            <Button variant="outline-dark" type="submit" disabled={!values.message || !isValid}>
               &#10149;
             </Button>
           </Col>
