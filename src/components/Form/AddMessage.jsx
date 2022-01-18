@@ -20,18 +20,22 @@ const AddMessage = (props) => {
   const initialValues = { message: '' };
   const subMitHandler = (values, { resetForm, setFieldValue }) => {
     const msg = { text: values.message, user: userAuth, channel: currentChannelId };
-    socket.emit('newMessage', msg, ({ status }) => {
-      if (status === 'ok') {
-        resetForm();
+    if (socket.connected) {
+      socket.emit('newMessage', msg);
+      resetForm();
+      input.current.focus();
+    } else {
+      setFieldValue('message', values.message);
+      setTimeout(() => {
         input.current.focus();
-      } else {
-        setFieldValue('message', values.message);
-        input.current.focus();
-        setTimeout(() => socket.emit('newMessage', msg), 3000);
-      }
-    });
-    resetForm();
-    input.current.focus();
+        socket.emit('newMessage', msg, ({ status }) => {
+          if (status === 'ok') {
+            resetForm();
+            input.current.focus();
+          }
+        });
+      }, 5000);
+    }
   };
   const formik = useFormikCustom(initialValues, subMitHandler, schemaAddMessage);
   const {
