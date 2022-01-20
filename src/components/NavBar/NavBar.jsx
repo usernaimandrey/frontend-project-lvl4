@@ -16,6 +16,7 @@ import authContext from '../../context/index.jsx';
 import Login from '../Form/Login.jsx';
 import MainPage from '../MainPage/MainPage.jsx';
 import PageNotFounf from '../PageNotFound/PageNotFound.jsx';
+import ToastChatErr from '../Toasts/Toast.jsx';
 import imgLabel from '../../picture/label.png';
 
 const PrivateRoute = ({ children }) => {
@@ -79,6 +80,7 @@ const NavBar = () => {
           <Route path="*" element={<PageNotFounf header={t('pageNotFound.header')} />} />
         </Routes>
       </Router>
+      <ToastChatErr />
     </div>
   );
 };

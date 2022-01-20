@@ -20,7 +20,7 @@ const SideBar = () => {
           <h4>{t('sideBar')}</h4>
           <Button variant="outline-info" size="sm">&#10010;</Button>
         </Container>
-        {channel.map(({ id, name }) => <Nav.Link key={id} eventKey={id}>{`# ${name}`}</Nav.Link>)}
+        {channel.map(({ id, name }) => <Nav.Link className="d-flex flex-column" key={id} eventKey={id}>{`# ${name}`}</Nav.Link>)}
       </Nav>
     </div>
   );

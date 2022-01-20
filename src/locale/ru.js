@@ -30,5 +30,9 @@ export default {
       key_few: '{{count}} сообщения',
       key_many: '{{count}} сообщений',
     },
+    toast: {
+      connectionErrHeader: 'Ошибка!',
+      connectionErrBody: 'Проверьте подключение к сети!',
+    },
   },
 };
