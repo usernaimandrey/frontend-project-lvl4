@@ -12,6 +12,7 @@ const SideBar = ({
   const { t } = useTranslation();
   const { currentChannelId } = useSelector((state) => state.channel);
   const channels = useSelector(selectorsChannels.selectAll);
+  console.log(channels);
   const channelChangeHandler = (id) => (e) => {
     e.preventDefault();
     dispatch(changeCannel({ id }));
@@ -38,7 +39,7 @@ const SideBar = ({
           <Button variant="outline-info" size="sm" onClick={handlerShow}>&#10010;</Button>
         </Container>
         <Container className="overflow-auto" ref={sideRef}>
-          {channels.map(({ id, name }) => (
+          {channels.map(({ id, name, removable }) => (
             <Nav.Link
               className="w-100 rounded-0 text-start btn btn-secondary"
               key={id}

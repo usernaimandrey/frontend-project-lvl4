@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import useFormikCustom from '../../hooks/useFormikCustom.jsx';
 import { addChannel, changeCannel, selectorsChannels } from '../../slices/chennelReducer.js';
+import { setConnectionErr } from '../../slices/messagesReducer.js';
 
 const AddChannel = (props) => {
   const [stateConnection, setState] = useState(false);
@@ -22,6 +23,7 @@ const AddChannel = (props) => {
   };
   socket.on('connect_error', () => {
     setState(true);
+    dispatch(setConnectionErr());
     socket.connect();
   });
   socket.on('connect', () => {
@@ -45,10 +47,10 @@ const AddChannel = (props) => {
         dispatch(changeCannel({ id }));
         resetForm();
       }
+      if (stateConnection) {
+        setErrors({ channel: t('modal.err.network') });
+      }
     });
-    if (stateConnection) {
-      setErrors({ channel: t('modal.err.network') });
-    }
   };
   const formik = useFormikCustom(initialValues, submitHandler, validationSchema);
   const {
