@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { setConnectionErr } from '../../slices/messagesReducer.js';
 
-const ToastChatErr = () => {
+const ToastNetworkErr = () => {
   const { t } = useTranslation();
   const { connectionErr } = useSelector((state) => state.messages);
   const dispatch = useDispatch();
@@ -29,4 +29,4 @@ const ToastChatErr = () => {
   );
 };
 
-export default ToastChatErr;
+export default ToastNetworkErr;

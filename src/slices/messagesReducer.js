@@ -12,7 +12,8 @@ export const messagesSlices = createSlice({
   initialState: messagesAdapter.getInitialState({ connectionErr: false }),
 
   reducers: {
-    addNewMessages: (state, { payload: { msg } }) => {
+    addNewMessages: (state, { payload }) => {
+      const { msg } = payload;
       messagesAdapter.addOne(state, msg);
     },
     setConnectionErr: (state) => {

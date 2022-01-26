@@ -2,21 +2,18 @@ import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { Container, Col } from 'react-bootstrap';
-import { io } from 'socket.io-client';
-import routes from '../../routes.js';
 import AddMessage from '../Form/AddMessage.jsx';
 import { selecrorsMessages, addNewMessages } from '../../slices/messagesReducer.js';
 import { selectorsChannels } from '../../slices/chennelReducer.js';
 
-const ListOfMessages = () => {
-  const url = process.env.NODE_ENV === 'production' ? routes.getUrlProduction() : routes.getUrlDev();
-  const socket = io(url, {
-    reconnectionDelayMax: 10000,
-  });
-  const messages = useSelector(selecrorsMessages.selectAll);
-  const channels = useSelector(selectorsChannels.selectAll);
+const ListOfMessages = ({ socket }) => {
   const dispatch = useDispatch();
   const chatRef = useRef();
+  const channels = useSelector(selectorsChannels.selectAll);
+  const { currentChannelId } = useSelector((state) => state.channel);
+  const [currentChannel] = channels.filter(({ id }) => id === currentChannelId);
+  const messages = useSelector(selecrorsMessages.selectAll)
+    .filter(({ channel }) => channel === currentChannelId);
   useEffect(() => {
     chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [messages]);
@@ -26,8 +23,6 @@ const ListOfMessages = () => {
     });
   }, []);
   const { t } = useTranslation();
-  const { currentChannelId } = useSelector((state) => state.channel);
-  const [currentChannel] = channels.filter(({ id }) => id === currentChannelId);
   return (
     <div className="col p-0 h-100">
       <div className="d-flex flex-column h-100">
@@ -35,7 +30,7 @@ const ListOfMessages = () => {
           <h4 className="text-primary bg-light">
             #
             {' '}
-            {currentChannel.name}
+            {currentChannel?.name}
           </h4>
           <p className="text-secondary">
             {t('messageBox.key', { count: messages.length })}

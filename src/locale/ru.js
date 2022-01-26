@@ -34,5 +34,17 @@ export default {
       connectionErrHeader: 'Ошибка!',
       connectionErrBody: 'Проверьте подключение к сети!',
     },
+    modal: {
+      addChannel: 'Добавить канал',
+      button: {
+        save: 'Отправить',
+        close: 'Отменить',
+      },
+      err: {
+        network: 'Нет соединения',
+        require: 'Поле не может быть пустым',
+        uniq: 'Имя должно быть уникальным',
+      },
+    },
   },
 };
