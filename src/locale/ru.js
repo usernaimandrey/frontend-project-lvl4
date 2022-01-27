@@ -46,5 +46,15 @@ export default {
         uniq: 'Имя должно быть уникальным',
       },
     },
+    newChannel: {
+      del: 'Удалить',
+      rename: 'Переименовать',
+    },
+    removeModal: {
+      header: 'Удалить?',
+      body: 'Уверены?',
+      buttonClose: 'Отмена',
+      buttonOk: 'Удалить',
+    },
   },
 };

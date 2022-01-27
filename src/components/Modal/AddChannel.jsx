@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   Form, Modal, Button, Container,
 } from 'react-bootstrap';
@@ -8,27 +8,23 @@ import * as Yup from 'yup';
 import useFormikCustom from '../../hooks/useFormikCustom.jsx';
 import { addChannel, changeCannel, selectorsChannels } from '../../slices/chennelReducer.js';
 import { setConnectionErr } from '../../slices/messagesReducer.js';
+import { addChannelShow } from '../../slices/modalReducer.js';
 
 const AddChannel = (props) => {
-  const [stateConnection, setState] = useState(false);
-  const { show, handler, socket } = props;
+  const { addChannelModalState } = useSelector((state) => state.modal);
+  const { socket } = props;
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const inputRef = useRef();
+  const handlerShow = () => {
+    dispatch(addChannelShow());
+  };
   useEffect(() => {
     inputRef.current?.select();
-  }, [show]);
+  }, [addChannelModalState]);
   const initialValues = {
     channel: '',
   };
-  socket.on('connect_error', () => {
-    setState(true);
-    dispatch(setConnectionErr());
-    socket.connect();
-  });
-  socket.on('connect', () => {
-    setState(false);
-  });
   const channelsNames = useSelector(selectorsChannels.selectAll)
     .map(({ name }) => name);
   const validationSchema = Yup.object({
@@ -36,21 +32,32 @@ const AddChannel = (props) => {
       .trim()
       .required(t('modal.err.require')),
   });
-  const submitHandler = (values, { resetForm, setErrors }) => {
+  const submitHandler = (values, { resetForm, setErrors, setFieldValue }) => {
     const dataChannel = { name: values.channel, removable: true };
-    socket.emit('newChannel', dataChannel, (response) => {
-      if (response.status === 'ok') {
-        const { data } = response;
-        const channel = data;
-        const { id } = data;
-        dispatch(addChannel({ channel }));
-        dispatch(changeCannel({ id }));
-        resetForm();
-      }
-      if (stateConnection) {
-        setErrors({ channel: t('modal.err.network') });
-      }
-    });
+    const req = () => {
+      socket.emit('newChannel', dataChannel, (response) => {
+        if (response.status === 'ok') {
+          const { data } = response;
+          const channel = data;
+          const { id } = data;
+          dispatch(addChannel({ channel }));
+          dispatch(changeCannel({ id }));
+          resetForm();
+        }
+      });
+    };
+    if (socket.connected) {
+      req();
+    } else {
+      dispatch(addChannelShow());
+      setFieldValue('channel', values.channel);
+      setErrors({ channel: t('modal.err.network') });
+      setTimeout(() => {
+        req();
+        inputRef.current.focus();
+        dispatch(setConnectionErr());
+      });
+    }
   };
   const formik = useFormikCustom(initialValues, submitHandler, validationSchema);
   const {
@@ -62,8 +69,8 @@ const AddChannel = (props) => {
   } = formik;
   return (
     <Modal
-      show={show}
-      onHide={handler}
+      show={addChannelModalState}
+      onHide={handlerShow}
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
@@ -85,10 +92,10 @@ const AddChannel = (props) => {
             <Form.Control.Feedback type="invalid">{errors.channel}</Form.Control.Feedback>
           </Form.Group>
           <Container className="d-flex justify-content-end">
-            <Button className="me-2" variant="secondary" onClick={handler}>
+            <Button className="me-2" variant="secondary" onClick={handlerShow}>
               {t('modal.button.close')}
             </Button>
-            <Button variant="primary" type="submit" disabled={stateConnection || !isValid || !values.channel} onClick={handler}>
+            <Button variant="primary" type="submit" disabled={!isValid || !values.channel} onClick={handlerShow}>
               {t('modal.button.save')}
             </Button>
           </Container>
