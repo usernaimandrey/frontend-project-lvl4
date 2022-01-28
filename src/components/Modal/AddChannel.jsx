@@ -16,9 +16,6 @@ const AddChannel = (props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const inputRef = useRef();
-  const handlerShow = () => {
-    dispatch(addChannelShow());
-  };
   useEffect(() => {
     inputRef.current?.select();
   }, [addChannelModalState]);
@@ -30,7 +27,9 @@ const AddChannel = (props) => {
   const validationSchema = Yup.object({
     channel: Yup.string().notOneOf(channelsNames, t('modal.err.uniq'))
       .trim()
-      .required(t('modal.err.require')),
+      .required(t('modal.err.require'))
+      .min(3, t('modal.err.minMax'))
+      .max(20, t('modal.err.minMax')),
   });
   const submitHandler = (values, { resetForm, setErrors, setFieldValue }) => {
     const dataChannel = { name: values.channel, removable: true };
@@ -66,11 +65,19 @@ const AddChannel = (props) => {
     values,
     errors,
     isValid,
+    resetForm,
   } = formik;
+  const handlerShow = () => {
+    dispatch(addChannelShow());
+  };
+  const handlerOnHide = () => {
+    dispatch(addChannelShow());
+    resetForm();
+  };
   return (
     <Modal
       show={addChannelModalState}
-      onHide={handlerShow}
+      onHide={handlerOnHide}
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
@@ -92,7 +99,7 @@ const AddChannel = (props) => {
             <Form.Control.Feedback type="invalid">{errors.channel}</Form.Control.Feedback>
           </Form.Group>
           <Container className="d-flex justify-content-end">
-            <Button className="me-2" variant="secondary" onClick={handlerShow}>
+            <Button className="me-2" variant="secondary" onClick={handlerOnHide}>
               {t('modal.button.close')}
             </Button>
             <Button variant="primary" type="submit" disabled={!isValid || !values.channel} onClick={handlerShow}>

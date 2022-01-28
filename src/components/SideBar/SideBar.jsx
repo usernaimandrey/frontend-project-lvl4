@@ -15,7 +15,6 @@ const SideBar = ({ socket }) => {
   const { t } = useTranslation();
   const { currentChannelId } = useSelector((state) => state.channel);
   const channels = useSelector(selectorsChannels.selectAll);
-  const defaultChannel = channels.find(({ name }) => name === 'general');
   const channelChangeHandler = (id) => (e) => {
     e.preventDefault();
     dispatch(changeCannel({ id }));
@@ -36,13 +35,12 @@ const SideBar = ({ socket }) => {
     socket.on('newChannel', (channel) => {
       dispatch(addChannel({ channel }));
     });
-  });
+  }, [channels]);
   useEffect(() => {
     socket.on('removeChannel', ({ id }) => {
-      dispatch(removeChannel(id));
-      dispatch(changeCannel({ id: defaultChannel.id }));
+      dispatch(removeChannel({ id }));
     });
-  });
+  }, [channels]);
   return (
     <div
       className="col-4 col-md-2 border-end pt-5 px-0 bg-light"

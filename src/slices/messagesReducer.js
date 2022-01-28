@@ -3,7 +3,7 @@ import {
   createSlice,
   createEntityAdapter,
 } from '@reduxjs/toolkit';
-import { fetchGetData } from './chennelReducer.js';
+import { fetchGetData, removeChannel } from './chennelReducer.js';
 
 const messagesAdapter = createEntityAdapter();
 
@@ -25,6 +25,17 @@ export const messagesSlices = createSlice({
     builder
       .addCase(fetchGetData.fulfilled, (state, { payload: { messages } }) => {
         messagesAdapter.setAll(state, messages);
+      })
+      .addCase(removeChannel, (state, { payload }) => {
+        const { id } = payload;
+        const newEntities = Object.keys(state.entities)
+          .reduce((acc, el) => {
+            if (state.entities[el].channelId !== id) {
+              return { [el]: state.entities[el], ...acc };
+            }
+            return acc;
+          }, {});
+        messagesAdapter.setAll(state, newEntities);
       });
   },
 });

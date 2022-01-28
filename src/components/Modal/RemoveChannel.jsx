@@ -1,22 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { removeChannelShow } from '../../slices/modalReducer.js';
-// import { setConnectionErr } from '../../slices/messagesReducer.js';
+import { setConnectionErr } from '../../slices/messagesReducer.js';
 
 const RemoveChannel = ({ socket }) => {
+  const [isSubmiting, setSubmiting] = useState(false);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const handleClose = () => dispatch(removeChannelShow());
   const { removeChannelModalState } = useSelector((state) => state.modal);
   const { removeId } = useSelector((state) => state.modal);
-  console.log(socket);
   const handler = (e) => {
     e.preventDefault();
     if (socket.connected) {
-      socket.emit('removeChannel', { id: removeId }, (response) => console.log(response));
-      handleClose();
+      socket.emit('removeChannel', { id: removeId }, () => handleClose());
+    } else {
+      setSubmiting(true);
+      setTimeout(() => {
+        socket.emit('removeChannel', { id: removeId }, () => handleClose());
+        setSubmiting(false);
+        dispatch(setConnectionErr());
+      }, 5000);
     }
   };
   return (
@@ -31,10 +37,10 @@ const RemoveChannel = ({ socket }) => {
       </Modal.Header>
       <Modal.Body>{t('removeModal.body')}</Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+        <Button variant="secondary" disabled={isSubmiting} onClick={handleClose}>
           {t('removeModal.buttonClose')}
         </Button>
-        <Button variant="danger" onClick={handler}>
+        <Button variant="danger" disabled={isSubmiting} onClick={handler}>
           {t('removeModal.buttonOk')}
         </Button>
       </Modal.Footer>

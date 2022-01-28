@@ -13,7 +13,7 @@ const ListOfMessages = ({ socket }) => {
   const { currentChannelId } = useSelector((state) => state.channel);
   const [currentChannel] = channels.filter(({ id }) => id === currentChannelId);
   const messages = useSelector(selecrorsMessages.selectAll)
-    .filter(({ channel }) => channel === currentChannelId);
+    .filter(({ channelId }) => channelId === currentChannelId);
   useEffect(() => {
     chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [messages]);

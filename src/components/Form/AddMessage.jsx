@@ -21,7 +21,7 @@ const AddMessage = (props) => {
   const { schemaAddMessage } = schema;
   const initialValues = { message: '' };
   const subMitHandler = (values, { resetForm, setFieldValue }) => {
-    const msg = { text: values.message, user: userAuth, channel: currentChannelId };
+    const msg = { text: values.message, user: userAuth, channelId: currentChannelId };
     if (socket.connected) {
       socket.emit('newMessage', msg);
       resetForm();
