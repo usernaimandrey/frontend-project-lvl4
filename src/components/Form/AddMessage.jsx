@@ -29,15 +29,7 @@ const AddMessage = (props) => {
     } else {
       dispatch(setConnectionErr());
       setFieldValue('message', values.message);
-      setTimeout(() => {
-        input.current.focus();
-        socket.emit('newMessage', msg, ({ status }) => {
-          if (status === 'ok') {
-            resetForm();
-            input.current.focus();
-          }
-        });
-      }, 5000);
+      input.current.focus();
     }
   };
   const formik = useFormikCustom(initialValues, subMitHandler, schemaAddMessage);

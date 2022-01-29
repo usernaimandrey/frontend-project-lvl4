@@ -5,9 +5,11 @@ import {
   Nav, Button, Container, ButtonGroup, Dropdown,
 } from 'react-bootstrap';
 import {
-  selectorsChannels, addChannel, changeCannel, removeChannel,
+  selectorsChannels, addChannel, changeCannel, removeChannel, renameChannel,
 } from '../../slices/chennelReducer.js';
-import { addChannelShow, removeChannelShow, setRemoveId } from '../../slices/modalReducer.js';
+import {
+  addChannelShow, removeChannelShow, setRemoveId, setRenameId, renameChannelShow, setRenameName,
+} from '../../slices/modalReducer.js';
 
 const SideBar = ({ socket }) => {
   const sideRef = useRef();
@@ -28,6 +30,15 @@ const SideBar = ({ socket }) => {
     dispatch(setRemoveId({ id }));
     dispatch(removeChannelShow());
   };
+  const handlerShowModalRename = (id) => (e) => {
+    e.preventDefault();
+    const renameChannelName = channels
+      .find((channel) => channel.id === id);
+    const { name } = renameChannelName;
+    dispatch(setRenameName({ name }));
+    dispatch(setRenameId({ id }));
+    dispatch(renameChannelShow());
+  };
   useEffect(() => {
     sideRef.current.scrollTop = sideRef.current.scrollHeight;
   }, [channels]);
@@ -39,6 +50,16 @@ const SideBar = ({ socket }) => {
   useEffect(() => {
     socket.on('removeChannel', ({ id }) => {
       dispatch(removeChannel({ id }));
+    });
+  }, [channels]);
+  useEffect(() => {
+    socket.on('renameChannel', (channel) => {
+      dispatch(renameChannel({
+        id: channel.id,
+        changes: {
+          name: channel.name,
+        },
+      }));
     });
   }, [channels]);
   return (
@@ -84,6 +105,7 @@ const SideBar = ({ socket }) => {
               </Dropdown.Item>
               <Dropdown.Item
                 href="#/action-2"
+                onClick={handlerShowModalRename(id)}
               >
                 {t('newChannel.rename')}
               </Dropdown.Item>

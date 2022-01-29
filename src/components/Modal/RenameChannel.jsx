@@ -6,41 +6,39 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import useFormikCustom from '../../hooks/useFormikCustom.jsx';
-import { addChannel, changeCannel, selectorsChannels } from '../../slices/chennelReducer.js';
+import { selectorsChannels } from '../../slices/chennelReducer.js';
 import { setConnectionErr } from '../../slices/messagesReducer.js';
-import { addChannelShow } from '../../slices/modalReducer.js';
+import { renameChannelShow } from '../../slices/modalReducer.js';
 
-const AddChannel = (props) => {
-  const { addChannelModalState } = useSelector((state) => state.modal);
+const RenameChannel = (props) => {
+  const { renameModalState } = useSelector((state) => state.modal);
+  const { renameId } = useSelector((state) => state.modal);
+  const { renameChannelName } = useSelector((state) => state.modal);
+  const nameInit = !renameChannelName ? '' : renameChannelName;
   const { socket } = props;
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const inputRef = useRef();
+  const inputRefRename = useRef();
   useEffect(() => {
-    inputRef.current?.select();
-  }, [addChannelModalState]);
+    inputRefRename.current?.select();
+  }, [renameModalState]);
   const initialValues = {
-    channel: '',
+    value: nameInit,
   };
   const channelsNames = useSelector(selectorsChannels.selectAll)
     .map(({ name }) => name);
   const validationSchema = Yup.object({
-    channel: Yup.string().notOneOf(channelsNames, t('modal.err.uniq'))
+    value: Yup.string().notOneOf(channelsNames, t('modal.err.uniq'))
       .trim()
       .required(t('modal.err.require'))
       .min(3, t('modal.err.minMax'))
       .max(20, t('modal.err.minMax')),
   });
   const submitHandler = (values, { resetForm, setErrors, setFieldValue }) => {
-    const dataChannel = { name: values.channel, removable: true };
+    const dataChannel = { name: values.value, id: renameId };
     const req = () => {
-      socket.emit('newChannel', dataChannel, (response) => {
+      socket.emit('renameChannel', dataChannel, (response) => {
         if (response.status === 'ok') {
-          const { data } = response;
-          const channel = data;
-          const { id } = data;
-          dispatch(addChannel({ channel }));
-          dispatch(changeCannel({ id }));
           resetForm();
         }
       });
@@ -48,10 +46,10 @@ const AddChannel = (props) => {
     if (socket.connected) {
       req();
     } else {
-      dispatch(addChannelShow());
+      dispatch(renameChannelShow());
       setFieldValue('channel', values.channel);
       setErrors({ channel: t('modal.err.network') });
-      inputRef.current.focus();
+      inputRefRename.current.focus();
       dispatch(setConnectionErr());
     }
   };
@@ -65,41 +63,41 @@ const AddChannel = (props) => {
     resetForm,
   } = formik;
   const handlerShow = () => {
-    dispatch(addChannelShow());
+    dispatch(renameChannelShow());
   };
   const handlerOnHide = () => {
-    dispatch(addChannelShow());
+    dispatch(renameChannelShow());
     resetForm();
   };
   return (
     <Modal
-      show={addChannelModalState}
+      show={renameModalState}
       onHide={handlerOnHide}
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title>{t('modal.addChannel')}</Modal.Title>
+        <Modal.Title>{t('rename')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="channel">
             <Form.Control
               type="text"
-              ref={inputRef}
-              autoComplete="channel"
-              name="channel"
-              isInvalid={errors.channel}
+              ref={inputRefRename}
+              autoComplete="value"
+              name="value"
+              isInvalid={errors.value}
               onChange={handleChange}
-              value={values.channel}
+              value={values.value}
             />
-            <Form.Control.Feedback type="invalid">{errors.channel}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">{errors.value}</Form.Control.Feedback>
           </Form.Group>
           <Container className="d-flex justify-content-end">
             <Button className="me-2" variant="secondary" onClick={handlerOnHide}>
               {t('modal.button.close')}
             </Button>
-            <Button variant="primary" type="submit" disabled={!isValid || !values.channel} onClick={handlerShow}>
+            <Button variant="primary" type="submit" disabled={!isValid || !values.value} onClick={handlerShow}>
               {t('modal.button.save')}
             </Button>
           </Container>
@@ -109,4 +107,4 @@ const AddChannel = (props) => {
   );
 };
 
-export default AddChannel;
+export default RenameChannel;

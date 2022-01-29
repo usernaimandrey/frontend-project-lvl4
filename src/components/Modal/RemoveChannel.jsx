@@ -18,11 +18,8 @@ const RemoveChannel = ({ socket }) => {
       socket.emit('removeChannel', { id: removeId }, () => handleClose());
     } else {
       setSubmiting(true);
-      setTimeout(() => {
-        socket.emit('removeChannel', { id: removeId }, () => handleClose());
-        setSubmiting(false);
-        dispatch(setConnectionErr());
-      }, 5000);
+      setSubmiting(false);
+      dispatch(setConnectionErr());
     }
   };
   return (

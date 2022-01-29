@@ -57,5 +57,6 @@ export default {
       buttonClose: 'Отмена',
       buttonOk: 'Удалить',
     },
+    rename: 'Переименовать канал',
   },
 };

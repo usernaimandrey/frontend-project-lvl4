@@ -46,6 +46,7 @@ export const channelSlices = createSlice({
         state.currentChannelId = state.defaultChannelId;
       }
     },
+    renameChannel: channelAdapter.updateOne,
   },
 
   extraReducers: (builder) => {
@@ -68,7 +69,9 @@ export const channelSlices = createSlice({
   },
 });
 
-export const { addChannel, changeCannel, removeChannel } = channelSlices.actions;
+export const {
+  addChannel, changeCannel, removeChannel, renameChannel,
+} = channelSlices.actions;
 
 export const selectorsChannels = channelAdapter.getSelectors((state) => state.channel);
 
