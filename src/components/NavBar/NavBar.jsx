@@ -18,6 +18,7 @@ import MainPage from '../MainPage/MainPage.jsx';
 import PageNotFounf from '../PageNotFound/PageNotFound.jsx';
 import ToastNetworkErr from '../Toasts/ToastNetworkErr.jsx';
 import imgLabel from '../../picture/label.png';
+import RegistrationForm from '../Form/RegistrarionForm.jsx';
 
 const PrivateRoute = ({ children }) => {
   const userId = JSON.parse(localStorage.getItem('userId'));
@@ -76,7 +77,7 @@ const NavBar = () => {
                     )}
           />
           <Route path="/login/" element={<Login />} />
-          <Route path="/registration/" element={<MainPage />} />
+          <Route path="/registration/" element={<RegistrationForm />} />
           <Route path="*" element={<PageNotFounf header={t('pageNotFound.header')} />} />
         </Routes>
       </Router>

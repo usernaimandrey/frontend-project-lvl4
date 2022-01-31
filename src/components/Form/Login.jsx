@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import {
   Link, useLocation, useNavigate,
@@ -10,8 +11,10 @@ import schema from '../../validator/index.js';
 import useFormikCustom from '../../hooks/useFormikCustom.jsx';
 import routes from '../../routes.js';
 import useAuth from '../../hooks/useAuth.jsx';
+import { setConnectionErr } from '../../slices/messagesReducer.js';
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const auth = useAuth();
   const location = useLocation();
@@ -37,7 +40,11 @@ const LoginPage = () => {
       localStorage.setItem('userId', JSON.stringify({ token: data.token, userAuth: login }));
       navigate('/', { from: location });
     } catch (e) {
-      setErrors({ login: t('signInForm.logIn.errLogIn'), password: t('signInForm.password.errPas') });
+      if (e.response && e.response.status === 401) {
+        setErrors({ login: t('signInForm.logIn.errLogIn'), password: t('signInForm.password.errPas') });
+      } else {
+        dispatch(setConnectionErr());
+      }
     }
   };
   const formik = useFormikCustom(initialValues, submitHandler, schema.schemaLogin(t('signInForm.validErr')));
