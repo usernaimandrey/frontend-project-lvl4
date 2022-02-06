@@ -1,11 +1,23 @@
 import React, { useRef, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import {
+  useLocation, useNavigate,
+} from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 import siginup from '../../picture/siginup.png';
 import useFormikCustom from '../../hooks/useFormikCustom.jsx';
 import schema from '../../validator/index.js';
+import routes from '../../routes';
+import useAuth from '../../hooks/useAuth.jsx';
+import { setConnectionErr } from '../../slices/messagesReducer.js';
 
 const RegistrationForm = () => {
+  const dispatch = useDispatch();
+  const auth = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
   const input = useRef();
   const { t } = useTranslation();
   useEffect(() => {
@@ -16,7 +28,29 @@ const RegistrationForm = () => {
     password: '',
     confirmpassword: '',
   };
-  const submitHandler = () => console.log('yeee!!');
+  const submitHandler = async (values, { setErrors }) => {
+    try {
+      const { login, password } = values;
+      const path = routes.signUpPath();
+      const { data } = await axios.post(path, {
+        username: login,
+        password,
+      });
+      auth.logIn();
+      localStorage.setItem('userId', JSON.stringify({ token: data.token, userAuth: login }));
+      navigate('/', { from: location });
+    } catch (e) {
+      if (e.response && e.response.status === 409) {
+        setErrors({
+          login: t('signUpForm.validErr.conflict'),
+          password: t('signUpForm.validErr.conflict'),
+          confirmpassword: t('signUpForm.validErr.conflict'),
+        });
+      } else {
+        dispatch(setConnectionErr());
+      }
+    }
+  };
   const validationSchema = schema.schemaRegistrarion(t('signUpForm.validErr.req'), t('signUpForm.validErr.minMaxLog'), t('signUpForm.validErr.minPass'), t('signUpForm.validErr.confirm'));
   const formik = useFormikCustom(initialValues, submitHandler, validationSchema);
   const {
@@ -68,7 +102,7 @@ const RegistrationForm = () => {
                 <Form.Group className="mb-3" controlId="confirmpassword">
                   <Form.Label>{t('signUpForm.confirmPass')}</Form.Label>
                   <Form.Control
-                    type="text"
+                    type="password"
                     placeholder={t('signUpForm.confirmPass')}
                     autoComplete="confirmpassword"
                     name="confirmpassword"

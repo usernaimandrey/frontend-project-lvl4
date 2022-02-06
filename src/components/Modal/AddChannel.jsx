@@ -5,6 +5,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
+import { toast } from 'react-toastify';
 import useFormikCustom from '../../hooks/useFormikCustom.jsx';
 import { addChannel, changeCannel, selectorsChannels } from '../../slices/chennelReducer.js';
 import { setConnectionErr } from '../../slices/messagesReducer.js';
@@ -47,6 +48,7 @@ const AddChannel = (props) => {
     };
     if (socket.connected) {
       req();
+      toast.success('Канал создан');
     } else {
       dispatch(addChannelShow());
       setFieldValue('channel', values.channel);

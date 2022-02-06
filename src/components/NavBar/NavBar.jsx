@@ -77,7 +77,7 @@ const NavBar = () => {
                     )}
           />
           <Route path="/login/" element={<Login />} />
-          <Route path="/registration/" element={<RegistrationForm />} />
+          <Route path="/signup/" element={<RegistrationForm />} />
           <Route path="*" element={<PageNotFounf header={t('pageNotFound.header')} />} />
         </Routes>
       </Router>
