@@ -1,5 +1,11 @@
 export default {
   translation: {
+    toast: {
+      add: 'Канал успешно создан',
+      rename: 'Канал переименован',
+      remove: 'Канал удален',
+      connectionErr: 'Проверьте подключение к сети!',
+    },
     signInForm: {
       header: 'Войти',
       logIn: {
@@ -29,10 +35,6 @@ export default {
       key_one: '{{count}} сообщенe',
       key_few: '{{count}} сообщения',
       key_many: '{{count}} сообщений',
-    },
-    toast: {
-      connectionErrHeader: 'Ошибка!',
-      connectionErrBody: 'Проверьте подключение к сети!',
     },
     modal: {
       addChannel: 'Добавить канал',

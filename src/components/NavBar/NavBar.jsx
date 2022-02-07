@@ -1,4 +1,6 @@
 import React, { useContext, useEffect } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useTranslation } from 'react-i18next';
 import {
   Button, Navbar, Container,
@@ -16,7 +18,6 @@ import authContext from '../../context/index.jsx';
 import Login from '../Form/Login.jsx';
 import MainPage from '../MainPage/MainPage.jsx';
 import PageNotFounf from '../PageNotFound/PageNotFound.jsx';
-import ToastNetworkErr from '../Toasts/ToastNetworkErr.jsx';
 import imgLabel from '../../picture/label.png';
 import RegistrationForm from '../Form/RegistrarionForm.jsx';
 
@@ -81,7 +82,7 @@ const NavBar = () => {
           <Route path="*" element={<PageNotFounf header={t('pageNotFound.header')} />} />
         </Routes>
       </Router>
-      <ToastNetworkErr />
+      <ToastContainer autoClose={5000} />
     </div>
   );
 };

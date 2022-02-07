@@ -1,14 +1,13 @@
 import React, { useEffect, useRef } from 'react';
+import { toast } from 'react-toastify';
 import {
   Form, Modal, Button, Container,
 } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
-import { toast } from 'react-toastify';
 import useFormikCustom from '../../hooks/useFormikCustom.jsx';
 import { addChannel, changeCannel, selectorsChannels } from '../../slices/chennelReducer.js';
-import { setConnectionErr } from '../../slices/messagesReducer.js';
 import { addChannelShow } from '../../slices/modalReducer.js';
 
 const AddChannel = (props) => {
@@ -42,19 +41,19 @@ const AddChannel = (props) => {
           const { id } = data;
           dispatch(addChannel({ channel }));
           dispatch(changeCannel({ id }));
+          toast.success(t('toast.add'));
           resetForm();
         }
       });
     };
     if (socket.connected) {
       req();
-      toast.success('Канал создан');
     } else {
+      toast.error(t('toast.connectionErr'));
       dispatch(addChannelShow());
       setFieldValue('channel', values.channel);
       setErrors({ channel: t('modal.err.network') });
       inputRef.current.focus();
-      dispatch(setConnectionErr());
     }
   };
   const formik = useFormikCustom(initialValues, submitHandler, validationSchema);

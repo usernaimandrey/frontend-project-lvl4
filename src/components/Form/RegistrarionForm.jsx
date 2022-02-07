@@ -1,9 +1,9 @@
 import React, { useRef, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { Form, Button } from 'react-bootstrap';
 import {
   useLocation, useNavigate,
 } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import siginup from '../../picture/siginup.png';
@@ -11,10 +11,8 @@ import useFormikCustom from '../../hooks/useFormikCustom.jsx';
 import schema from '../../validator/index.js';
 import routes from '../../routes';
 import useAuth from '../../hooks/useAuth.jsx';
-import { setConnectionErr } from '../../slices/messagesReducer.js';
 
 const RegistrationForm = () => {
-  const dispatch = useDispatch();
   const auth = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -47,7 +45,7 @@ const RegistrationForm = () => {
           confirmpassword: t('signUpForm.validErr.conflict'),
         });
       } else {
-        dispatch(setConnectionErr());
+        toast.error(t('toast.connectionErr'));
       }
     }
   };

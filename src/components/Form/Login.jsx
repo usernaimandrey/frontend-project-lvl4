@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
+import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import {
   Link, useLocation, useNavigate,
@@ -11,10 +11,8 @@ import schema from '../../validator/index.js';
 import useFormikCustom from '../../hooks/useFormikCustom.jsx';
 import routes from '../../routes.js';
 import useAuth from '../../hooks/useAuth.jsx';
-import { setConnectionErr } from '../../slices/messagesReducer.js';
 
 const LoginPage = () => {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
   const auth = useAuth();
   const location = useLocation();
@@ -43,7 +41,7 @@ const LoginPage = () => {
       if (e.response && e.response.status === 401) {
         setErrors({ login: t('signInForm.logIn.errLogIn'), password: t('signInForm.password.errPas') });
       } else {
-        dispatch(setConnectionErr());
+        toast.error(t('toast.connectionErr'));
       }
     }
   };

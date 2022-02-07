@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { toast } from 'react-toastify';
 import {
   Form, Modal, Button, Container,
 } from 'react-bootstrap';
@@ -7,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import useFormikCustom from '../../hooks/useFormikCustom.jsx';
 import { selectorsChannels } from '../../slices/chennelReducer.js';
-import { setConnectionErr } from '../../slices/messagesReducer.js';
 import { renameChannelShow } from '../../slices/modalReducer.js';
 
 const RenameChannel = (props) => {
@@ -39,6 +39,7 @@ const RenameChannel = (props) => {
     const req = () => {
       socket.emit('renameChannel', dataChannel, (response) => {
         if (response.status === 'ok') {
+          toast.success(t('toast.rename'));
           resetForm();
         }
       });
@@ -46,11 +47,11 @@ const RenameChannel = (props) => {
     if (socket.connected) {
       req();
     } else {
+      toast.error(t('toast.connectionErr'));
       dispatch(renameChannelShow());
       setFieldValue('channel', values.channel);
       setErrors({ channel: t('modal.err.network') });
       inputRefRename.current.focus();
-      dispatch(setConnectionErr());
     }
   };
   const formik = useFormikCustom(initialValues, submitHandler, validationSchema);

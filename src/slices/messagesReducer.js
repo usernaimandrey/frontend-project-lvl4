@@ -9,15 +9,12 @@ const messagesAdapter = createEntityAdapter();
 
 export const messagesSlices = createSlice({
   name: 'messages',
-  initialState: messagesAdapter.getInitialState({ connectionErr: false }),
+  initialState: messagesAdapter.getInitialState(),
 
   reducers: {
     addNewMessages: (state, { payload }) => {
       const { msg } = payload;
       messagesAdapter.addOne(state, msg);
-    },
-    setConnectionErr: (state) => {
-      state.connectionErr = !state.connectionErr;
     },
   },
 
@@ -40,7 +37,7 @@ export const messagesSlices = createSlice({
   },
 });
 
-export const { addNewMessages, setConnectionErr } = messagesSlices.actions;
+export const { addNewMessages } = messagesSlices.actions;
 
 export const selecrorsMessages = messagesAdapter.getSelectors((state) => state.messages);
 

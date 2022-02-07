@@ -1,15 +1,14 @@
 import React, { useRef, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   Container, Form, Button, Col,
 } from 'react-bootstrap';
 import useFormikCustom from '../../hooks/useFormikCustom.jsx';
 import schema from '../../validator/index.js';
-import { setConnectionErr } from '../../slices/messagesReducer.js';
 
 const AddMessage = (props) => {
-  const dispatch = useDispatch();
   const { userAuth } = JSON.parse(localStorage.getItem('userId'));
   const { currentChannelId } = useSelector((state) => state.channel);
   const { socket } = props;
@@ -27,7 +26,7 @@ const AddMessage = (props) => {
       resetForm();
       input.current.focus();
     } else {
-      dispatch(setConnectionErr());
+      toast.error(t('toast.connectionErr'));
       setFieldValue('message', values.message);
       input.current.focus();
     }
