@@ -52,6 +52,7 @@ const LoginPage = () => {
     handleChange,
     values,
     errors,
+    touched,
   } = formik;
   return (
     <div className="row justify-content-center align-content-center h-100">
@@ -72,7 +73,7 @@ const LoginPage = () => {
                     placeholder={t('signInForm.logIn.name')}
                     autoComplete="login"
                     name="login"
-                    isInvalid={errors.login}
+                    isInvalid={errors.login || touched.login}
                     onChange={handleChange}
                     value={values.login}
                   />

@@ -10,7 +10,7 @@ export default {
       header: 'Войти',
       logIn: {
         name: 'Ваш ник',
-        errLogIn: 'Неверные имя пользователя или пароль',
+        errLogIn: '',
       },
       password: {
         name: 'Пароль',
