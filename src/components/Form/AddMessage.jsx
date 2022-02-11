@@ -54,6 +54,7 @@ const AddMessage = (props) => {
               <Form.Control
                 ref={input}
                 type="text"
+                aria-label={t('formMessageLable')}
                 placeholder={t('formMessage')}
                 autoComplete="message"
                 name="message"

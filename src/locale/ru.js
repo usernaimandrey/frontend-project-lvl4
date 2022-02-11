@@ -29,6 +29,7 @@ export default {
       networkErr: 'Проблеммы с сетью или пользователь не авторизован',
     },
     formMessage: 'Введите сообщение...',
+    formMessageLable: 'Новое сообщение',
     sideBar: 'Каналы',
     spiner: 'Загрузка...',
     messageBox: {
