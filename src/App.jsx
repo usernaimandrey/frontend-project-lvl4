@@ -29,7 +29,6 @@ const App = () => {
     captureUncaught: true,
     captureUnhandledRejections: true,
   };
-  setTimeout(function() {notThere();}, 1000);
   return (
     <ProviderRollbar config={rollbarConfig}>
       <ErrorBoundary level={LEVEL_WARN}>
