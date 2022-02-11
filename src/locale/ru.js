@@ -30,6 +30,7 @@ export default {
     },
     formMessage: 'Введите сообщение...',
     formMessageLable: 'Новое сообщение',
+    formMessageSend: 'Отправить',
     sideBar: 'Каналы',
     spiner: 'Загрузка...',
     messageBox: {

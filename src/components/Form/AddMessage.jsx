@@ -66,6 +66,7 @@ const AddMessage = (props) => {
           <Col>
             <Button variant="outline-dark" type="submit" disabled={!values.message || !isValid}>
               &#10149;
+              <span className="visually-hidden">{t('formMessageSend')}</span>
             </Button>
           </Col>
         </Container>
