@@ -18,7 +18,7 @@ import authContext from '../../context/index.jsx';
 import Login from '../Form/Login.jsx';
 import MainPage from '../MainPage/MainPage.jsx';
 import PageNotFounf from '../PageNotFound/PageNotFound.jsx';
-// import imgLabel from '../../picture/label.png';
+import imgLabel from '../../picture/label.png';
 import RegistrationForm from '../Form/RegistrarionForm.jsx';
 
 const PrivateRoute = ({ children }) => {
@@ -61,10 +61,8 @@ const NavBar = () => {
         <Navbar className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
           <Container fluid>
             <Navbar.Brand as={Link} to="/">
-              {/* <img src={imgLabel} alt=""
-              width="30" height="30" className="d-inline-block align-text-top" /> */}
-              {/* <strong>{t('navBar.navBrand')}</strong> */}
-              {t('navBar.navBrand')}
+              <img src={imgLabel} alt="" width="30" height="30" className="d-inline-block align-text-top" />
+              <strong>{t('navBar.navBrand')}</strong>
             </Navbar.Brand>
             <AuthButton />
           </Container>

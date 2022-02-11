@@ -21,7 +21,7 @@ export default {
     },
     navBar: {
       button: 'Выход',
-      navBrand: 'Hexlet Chart',
+      navBrand: 'Hexlet Chat',
     },
     pageNotFound: {
       header: 'Страница не найдена',
