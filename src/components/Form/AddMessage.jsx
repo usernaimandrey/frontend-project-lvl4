@@ -5,10 +5,15 @@ import { useSelector } from 'react-redux';
 import {
   Container, Form, Button, Col,
 } from 'react-bootstrap';
+import filter from 'leo-profanity';
 import useFormikCustom from '../../hooks/useFormikCustom.jsx';
 import schema from '../../validator/index.js';
 
 const AddMessage = (props) => {
+  filter.clearList();
+  filter.add(filter.getDictionary('en'));
+  filter.add(filter.getDictionary('fr'));
+  filter.add(filter.getDictionary('ru'));
   const { userAuth } = JSON.parse(localStorage.getItem('userId'));
   const { currentChannelId } = useSelector((state) => state.channel);
   const { socket } = props;
@@ -20,7 +25,9 @@ const AddMessage = (props) => {
   const { schemaAddMessage } = schema;
   const initialValues = { message: '' };
   const subMitHandler = (values, { resetForm, setFieldValue }) => {
-    const msg = { text: values.message, user: userAuth, channelId: currentChannelId };
+    const { message } = values;
+    const filteredMessage = filter.check(message) ? filter.clean(message) : message;
+    const msg = { text: filteredMessage, user: userAuth, channelId: currentChannelId };
     if (socket.connected) {
       socket.emit('newMessage', msg);
       resetForm();
