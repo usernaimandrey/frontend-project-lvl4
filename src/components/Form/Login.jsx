@@ -102,7 +102,7 @@ const LoginPage = () => {
           </div>
           <div className="card-footer p-4">
             <div className="text-center">
-              <Link to="/signup/">{t('signInForm.footer')}</Link>
+              <Link to="/signup">{t('signInForm.footer')}</Link>
             </div>
           </div>
         </div>
