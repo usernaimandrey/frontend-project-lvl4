@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom';
 import React, { useState } from 'react';
 import { Provider } from 'react-redux';
+import { Provider as ProviderRollbar, ErrorBoundary } from '@rollbar/react';
 import store from './slices/index.js';
 import './i18n.js';
 import authContext from './context/index.jsx';
@@ -20,11 +21,21 @@ const AuthProvider = ({ children }) => {
     </authContext.Provider>
   );
 };
-const App = () => (
-  <AuthProvider>
-    <NavBar />
-  </AuthProvider>
-);
+const App = () => {
+  const rollbarConfig = {
+    accessToken: '2ed00c04002f46748e0ef17039c4b0a1',
+    environment: 'production',
+  };
+  return (
+    <ProviderRollbar config={rollbarConfig}>
+      <ErrorBoundary>
+        <AuthProvider>
+          <NavBar />
+        </AuthProvider>
+      </ErrorBoundary>
+    </ProviderRollbar>
+  );
+};
 
 const container = document.getElementById('chat');
 ReactDOM.render(
