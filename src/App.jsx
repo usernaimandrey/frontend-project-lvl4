@@ -26,6 +26,7 @@ const App = () => {
     accessToken: '2ed00c04002f46748e0ef17039c4b0a1',
     environment: 'production',
   };
+  setTimeout(function() {notThere();}, 1000);
   return (
     <ProviderRollbar config={rollbarConfig}>
       <ErrorBoundary>
