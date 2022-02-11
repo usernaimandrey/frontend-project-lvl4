@@ -1,4 +1,3 @@
-import ReactDOM from 'react-dom';
 import React, { useState } from 'react';
 import { Provider } from 'react-redux';
 import { Provider as ProviderRollbar, ErrorBoundary, LEVEL_WARN } from '@rollbar/react';
@@ -40,12 +39,10 @@ const App = () => {
   );
 };
 
-const container = document.getElementById('chat');
-ReactDOM.render(
+const init = () => (
   <Provider store={store}>
     <App />
-  </Provider>,
-  container,
+  </Provider>
 );
 
-export default App;
+export default init;
