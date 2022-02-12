@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { io } from 'socket.io-client';
-import routes from '../../routes.js';
+// import routes from '../../routes.js';
 import { fetchGetData } from '../../slices/chennelReducer.js';
 import SideBar from '../SideBar/SideBar.jsx';
 import ListOfMessages from '../ListOfMessages/ListOfMessages.jsx';
@@ -16,8 +16,9 @@ import RenameChannel from '../Modal/RenameChannel.jsx';
 const MainPage = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const url = process.env.NODE_ENV === 'production' ? routes.getUrlProduction() : routes.getUrlDev();
-  const socket = io(url);
+  // const url = process.env.NODE_ENV === 'production' ?
+  // routes.getUrlProduction() : routes.getUrlDev();
+  const socket = io();
   useEffect(() => {
     dispatch(fetchGetData());
   }, [dispatch]);
