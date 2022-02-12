@@ -1,13 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Container, Col } from 'react-bootstrap';
 import AddMessage from '../Form/AddMessage.jsx';
-import { selecrorsMessages, addNewMessages } from '../../slices/messagesReducer.js';
+import { selecrorsMessages } from '../../slices/messagesReducer.js';
 import { selectorsChannels } from '../../slices/chennelReducer.js';
 
-const ListOfMessages = ({ socket }) => {
-  const dispatch = useDispatch();
+const ListOfMessages = () => {
   const chatRef = useRef();
   const channels = useSelector(selectorsChannels.selectAll);
   const { currentChannelId } = useSelector((state) => state.channel);
@@ -17,11 +16,6 @@ const ListOfMessages = ({ socket }) => {
   useEffect(() => {
     chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [messages]);
-  useEffect(() => {
-    socket.on('newMessage', (msg) => {
-      dispatch(addNewMessages({ msg }));
-    });
-  }, []);
   const { t } = useTranslation();
   return (
     <div className="col p-0 h-100">
@@ -48,7 +42,7 @@ const ListOfMessages = ({ socket }) => {
             ))}
           </Col>
         </Container>
-        <AddMessage socket={socket} />
+        <AddMessage />
       </div>
 
     </div>

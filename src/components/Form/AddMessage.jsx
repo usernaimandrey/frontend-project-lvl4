@@ -8,15 +8,16 @@ import {
 import filter from 'leo-profanity';
 import useFormikCustom from '../../hooks/useFormikCustom.jsx';
 import schema from '../../validator/index.js';
+import useSocket from '../../hooks/useSocket.jsx';
 
-const AddMessage = (props) => {
+const AddMessage = () => {
+  const socket = useSocket();
   filter.clearList();
   filter.add(filter.getDictionary('en'));
   filter.add(filter.getDictionary('fr'));
   filter.add(filter.getDictionary('ru'));
   const { userAuth } = JSON.parse(localStorage.getItem('userId'));
   const { currentChannelId } = useSelector((state) => state.channel);
-  const { socket } = props;
   const { t } = useTranslation();
   const input = useRef();
   useEffect(() => {

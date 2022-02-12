@@ -5,13 +5,13 @@ import {
   Nav, Button, Container, ButtonGroup, Dropdown,
 } from 'react-bootstrap';
 import {
-  selectorsChannels, addChannel, changeCannel, removeChannel, renameChannel,
+  selectorsChannels, changeCannel,
 } from '../../slices/chennelReducer.js';
 import {
   addChannelShow, removeChannelShow, setRemoveId, setRenameId, renameChannelShow, setRenameName,
 } from '../../slices/modalReducer.js';
 
-const SideBar = ({ socket }) => {
+const SideBar = () => {
   const sideRef = useRef();
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -41,26 +41,6 @@ const SideBar = ({ socket }) => {
   };
   useEffect(() => {
     sideRef.current.scrollTop = sideRef.current.scrollHeight;
-  }, [channels]);
-  useEffect(() => {
-    socket.on('newChannel', (channel) => {
-      dispatch(addChannel({ channel }));
-    });
-  }, [channels]);
-  useEffect(() => {
-    socket.on('removeChannel', ({ id }) => {
-      dispatch(removeChannel({ id }));
-    });
-  }, [channels]);
-  useEffect(() => {
-    socket.on('renameChannel', (channel) => {
-      dispatch(renameChannel({
-        id: channel.id,
-        changes: {
-          name: channel.name,
-        },
-      }));
-    });
   }, [channels]);
   return (
     <div

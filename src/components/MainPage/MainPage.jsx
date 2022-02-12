@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { io } from 'socket.io-client';
-// import routes from '../../routes.js';
 import { fetchGetData } from '../../slices/chennelReducer.js';
 import SideBar from '../SideBar/SideBar.jsx';
 import ListOfMessages from '../ListOfMessages/ListOfMessages.jsx';
@@ -16,9 +14,6 @@ import RenameChannel from '../Modal/RenameChannel.jsx';
 const MainPage = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  // const url = process.env.NODE_ENV === 'production' ?
-  // routes.getUrlProduction() : routes.getUrlDev();
-  const socket = io();
   useEffect(() => {
     dispatch(fetchGetData());
   }, [dispatch]);
@@ -34,14 +29,12 @@ const MainPage = () => {
       return (
         <Container className="h-100 overflow-hidden rounded shadow my-4">
           <div className="row h-100 bg-white flex-md-row">
-            <SideBar
-              socket={socket}
-            />
-            <ListOfMessages socket={socket} />
+            <SideBar />
+            <ListOfMessages />
           </div>
-          <RemoveChannel socket={socket} />
-          <AddChannel socket={socket} />
-          <RenameChannel socket={socket} />
+          <RemoveChannel />
+          <AddChannel />
+          <RenameChannel />
         </Container>
       );
     }

@@ -9,10 +9,11 @@ import * as Yup from 'yup';
 import useFormikCustom from '../../hooks/useFormikCustom.jsx';
 import { addChannel, changeCannel, selectorsChannels } from '../../slices/chennelReducer.js';
 import { addChannelShow } from '../../slices/modalReducer.js';
+import useSocket from '../../hooks/useSocket.jsx';
 
-const AddChannel = (props) => {
+const AddChannel = () => {
+  const socket = useSocket();
   const { addChannelModalState } = useSelector((state) => state.modal);
-  const { socket } = props;
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const inputRef = useRef();

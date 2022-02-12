@@ -4,8 +4,10 @@ import { Modal, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { removeChannelShow } from '../../slices/modalReducer.js';
+import useSocket from '../../hooks/useSocket.jsx';
 
-const RemoveChannel = ({ socket }) => {
+const RemoveChannel = () => {
+  const socket = useSocket();
   const [isSubmiting, setSubmiting] = useState(false);
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -15,7 +17,8 @@ const RemoveChannel = ({ socket }) => {
   const handler = (e) => {
     e.preventDefault();
     if (socket.connected) {
-      socket.emit('removeChannel', { id: removeId }, () => handleClose());
+      socket.emit('removeChannel', { id: removeId });
+      handleClose();
       toast.success(t('toast.remove'));
     } else {
       toast.error(t('toast.connectionErr'));

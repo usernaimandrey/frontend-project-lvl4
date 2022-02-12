@@ -9,13 +9,14 @@ import * as Yup from 'yup';
 import useFormikCustom from '../../hooks/useFormikCustom.jsx';
 import { selectorsChannels } from '../../slices/chennelReducer.js';
 import { renameChannelShow } from '../../slices/modalReducer.js';
+import useSocket from '../../hooks/useSocket.jsx';
 
-const RenameChannel = (props) => {
+const RenameChannel = () => {
+  const socket = useSocket();
   const { renameModalState } = useSelector((state) => state.modal);
   const { renameId } = useSelector((state) => state.modal);
   const { renameChannelName } = useSelector((state) => state.modal);
   const nameInit = !renameChannelName ? '' : renameChannelName;
-  const { socket } = props;
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const inputRefRename = useRef();
