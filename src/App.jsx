@@ -44,8 +44,8 @@ const App = ({ socket }) => {
   );
 };
 
-const init = () => {
-  const socket = io();
+const init = async (socketClient = io()) => {
+  const socket = socketClient;
   socket.on('newMessage', (msg) => {
     store.dispatch(addNewMessages({ msg }));
   });
