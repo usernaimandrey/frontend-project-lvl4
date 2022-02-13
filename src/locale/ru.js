@@ -6,6 +6,7 @@ export default {
       remove: 'Канал удален',
       connectionErr: 'Проверьте подключение к сети!',
     },
+    addChannel: '+',
     signInForm: {
       header: 'Войти',
       logIn: {
