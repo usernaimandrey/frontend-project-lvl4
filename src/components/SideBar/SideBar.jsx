@@ -76,17 +76,20 @@ const SideBar = () => {
               {name}
             </Button>
 
-            <Dropdown.Toggle split variant={id === currentChannelId ? 'secondary' : null} id="dropdown-button-drop-end" />
-
-            <Dropdown.Menu drop="down">
+            <Dropdown.Toggle split variant={id === currentChannelId ? 'secondary' : null} id="dropdown-button-drop-end">
+              <span className="visually-hidden">{t('buttonChannel')}</span>
+            </Dropdown.Toggle>
+            <Dropdown.Menu align="end">
               <Dropdown.Item
-                href="#/action-1"
+                href="#"
+                role="button"
                 onClick={handlerShowModalRemove(id)}
               >
                 {t('newChannel.del')}
               </Dropdown.Item>
               <Dropdown.Item
-                href="#/action-2"
+                href="#"
+                role="button"
                 onClick={handlerShowModalRename(id)}
               >
                 {t('newChannel.rename')}

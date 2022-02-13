@@ -1,12 +1,13 @@
 export default {
   translation: {
     toast: {
-      add: 'Канал успешно создан',
+      add: 'Канал создан',
       rename: 'Канал переименован',
-      remove: 'Канал удален',
-      connectionErr: 'Проверьте подключение к сети!',
+      remove: 'Канал удалён',
+      connectionErr: 'Ошибка соединения',
     },
     addChannel: '+',
+    buttonChannel: 'Управление каналом',
     signInForm: {
       header: 'Войти',
       logIn: {
@@ -41,6 +42,7 @@ export default {
     },
     modal: {
       addChannel: 'Добавить канал',
+      label: 'Имя канала',
       button: {
         save: 'Отправить',
         close: 'Отменить',

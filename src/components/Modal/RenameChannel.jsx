@@ -93,6 +93,7 @@ const RenameChannel = () => {
               onChange={handleChange}
               value={values.value}
             />
+            <Form.Label visuallyHidden>{t('modal.label')}</Form.Label>
             <Form.Control.Feedback type="invalid">{errors.value}</Form.Control.Feedback>
           </Form.Group>
           <Container className="d-flex justify-content-end">

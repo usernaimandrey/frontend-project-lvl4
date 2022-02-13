@@ -95,6 +95,7 @@ const AddChannel = () => {
               onChange={handleChange}
               value={values.channel}
             />
+            <Form.Label visuallyHidden>{t('modal.label')}</Form.Label>
             <Form.Control.Feedback type="invalid">{errors.channel}</Form.Control.Feedback>
           </Form.Group>
           <Container className="d-flex justify-content-end">
