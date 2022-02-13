@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { fetchGetData } from '../../slices/chennelReducer.js';
 import SideBar from '../SideBar/SideBar.jsx';
 import ListOfMessages from '../ListOfMessages/ListOfMessages.jsx';
@@ -39,6 +40,7 @@ const MainPage = () => {
       );
     }
     case 'failed': {
+      toast.error(t('toast.connectionErr'));
       return <PageNotFound header={t('pageNotFound.networkErr')} />;
     }
     default: {
