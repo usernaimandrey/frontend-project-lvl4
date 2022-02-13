@@ -53,7 +53,10 @@ const SideBar = () => {
       >
         <Container className="d-flex justify-content-around">
           <h4>{t('sideBar')}</h4>
-          <Button variant="outline-info" size="sm" onClick={handlerShow}>&#10010;</Button>
+          <Button variant="outline-info" size="sm" onClick={handlerShow}>
+            &#10010;
+            <span className="visually-hidden">+</span>
+          </Button>
         </Container>
         {channels.map(({ id, name, removable }) => (!removable ? (
 
