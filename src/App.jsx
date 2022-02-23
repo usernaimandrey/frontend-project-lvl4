@@ -25,7 +25,7 @@ const AuthProvider = ({ children }) => {
 };
 const App = ({ socket }) => {
   const rollbarConfig = {
-    accessToken: '2ed00c04002f46748e0ef17039c4b0a1',
+    accessToken: process.env.ROLLBAR_ACCESS_TOCKEN,
     environment: 'production',
     enabled: process.env.NODE_ENV === 'production',
     captureUncaught: true,
